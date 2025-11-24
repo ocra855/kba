@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>競馬収支管理</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2E7D32">
+</head>
+<body>
+    <div class="container">
+        <header class="summary-board">
+            <h2>💰 通算成績</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <span>収支</span>
+                    <span id="totalBalance" class="big-num">¥0</span>
+                </div>
+                <div class="stat-item">
+                    <span>回収率</span>
+                    <span id="totalRecovery" class="big-num">0%</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="input-area">
+            <h3>新規記録</h3>
+            <input type="text" id="raceName" placeholder="レース名 (例: 有馬記念)">
+            <input type="text" id="horseName" placeholder="軸馬・買い目メモ">
+            <div class="money-inputs">
+                <input type="number" id="investAmount" placeholder="投資額 (円)">
+                <input type="number" id="returnAmount" placeholder="払戻額 (円)">
+            </div>
+            <button id="saveBtn">記録をつける</button>
+        </div>
+
+        <div class="history-area">
+            <h3>履歴</h3>
+            <div id="recordList"></div>
+        </div>
+        
+        <button id="clearBtn" class="danger-btn">データ全消去</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
