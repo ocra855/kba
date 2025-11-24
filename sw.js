@@ -1,6 +1,6 @@
 var CACHE_NAME = 'pwa-ke-ba-ke-san-cache';
 var urlsToCache = [
-	'/kba.github.io//',
+	'/kba.github.io/',
 ];
 
 // インストール処理
