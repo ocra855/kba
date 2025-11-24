@@ -1,5 +1,5 @@
 var CACHE_NAME = 'pwa-ke-ba-ke-san-app';
-var urlsToCache = [
+var kba = [
 	'/pwa/',
 ];
 
