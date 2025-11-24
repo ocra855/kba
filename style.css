@@ -41,6 +41,7 @@ body {
     margin-bottom: 20px;
 }
 
+
 input {
     width: 100%;
     padding: 10px;
@@ -49,6 +50,21 @@ input {
     border-radius: 5px;
     box-sizing: border-box;
 }
+
+
+/* テキストエリア（複数行入力）のデザイン */
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: inherit; /* フォントを統一 */
+    resize: vertical;     /* 縦方向だけサイズ変更可能にする */
+    min-height: 80px;     /* 最小の高さ */
+}
+
 
 .money-inputs {
     display: flex;
@@ -93,7 +109,14 @@ button {
     margin-bottom: 5px;
 }
 
-.card-details { font-size: 0.9rem; color: #555; margin-bottom: 8px; }
+.card-details {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+    white-space: pre-wrap; 
+    line-height: 1.5; /* 行間を少し広げて読みやすく */
+}
+
 
 .card-result {
     display: flex;
