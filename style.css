@@ -1,0 +1,107 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* 集計ボード */
+.summary-board {
+    background: #2E7D32; /* ターフの緑 */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.summary-board h2 { margin: 0 0 10px 0; font-size: 1.2rem; opacity: 0.9; }
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+}
+
+.stat-item { display: flex; flex-direction: column; }
+.big-num { font-size: 1.8rem; font-weight: bold; }
+
+/* 入力エリア */
+.input-area {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.money-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #f57c00; /* オレンジ */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.danger-btn {
+    background-color: #999;
+    margin-top: 30px;
+    font-size: 0.8rem;
+}
+
+/* リスト表示 */
+.record-card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-left: 5px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.record-card.win { border-left-color: #e53935; } /* 勝ち */
+.record-card.lose { border-left-color: #1976d2; } /* 負け */
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.card-details { font-size: 0.9rem; color: #555; margin-bottom: 8px; }
+
+.card-result {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+}
+
+.plus { color: #e53935; }
+.minus { color: #1976d2; }
