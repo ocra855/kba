@@ -1,8 +1,5 @@
 # 🐎 TURF LOG (ターフログ)
 
-![PWA Ready](https://img.shields.io/badge/PWA-Ready-success)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
 
 **TURF LOG** は、競馬の収支と回収率をスマートに管理するための **PWA (Progressive Web App)** です。
 「どの馬を買ったか」「いくら勝ったか」を直感的に記録し、あなただけのデータベースを構築します。
