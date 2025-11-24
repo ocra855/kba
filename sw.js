@@ -1,6 +1,6 @@
 var CACHE_NAME = 'pwa-ke-ba-ke-san-cache';
-var kba = [
-	'/pwa/',
+var urlsToCache = [
+	'/kba/',
 ];
 
 // インストール処理
@@ -9,7 +9,7 @@ self.addEventListener('install', function(event) {
 		caches
 			.open(CACHE_NAME)
 			.then(function(cache) {
-				return cache.addAll(kba);
+				return cache.addAll(urlsToCache);
 			})
 	);
 });
