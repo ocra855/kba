@@ -1,4 +1,4 @@
-var CACHE_NAME = 'pwa-ke-ba-ke-san-app';
+var CACHE_NAME = 'pwa-ke-ba-ke-san-cache';
 var kba = [
 	'/pwa/',
 ];
