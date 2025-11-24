@@ -105,3 +105,32 @@ button {
 
 .plus { color: #e53935; }
 .minus { color: #1976d2; }
+
+.action-buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px dashed #ddd;
+    padding-top: 10px;
+}
+
+.action-buttons button {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #1976d2; /* 青 */
+}
+
+.delete-btn {
+    background-color: #757575; /* グレー */
+}
+.delete-btn:hover {
+    background-color: #d32f2f; /* ホバー時は赤 */
+}
+
+
