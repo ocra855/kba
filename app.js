@@ -144,9 +144,7 @@ function createRecordElement(record) {
             <span>${record.race}</span>
             <span style="font-size:0.8em; font-weight:normal;">${record.date}</span>
         </div>
-        <div class="card-details">
-            ${record.horse ? '📝 ' + record.horse : ''}
-        </div>
+        <div class="card-details">${record.horse ? '📝 ' + record.horse : ''}</div>
         <div class="card-result">
             <span>投: ${record.invest.toLocaleString()} → 回: ${record.ret.toLocaleString()}</span>
             <span class="${isWin ? 'plus' : 'minus'}">
