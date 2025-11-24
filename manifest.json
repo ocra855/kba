@@ -1,5 +1,5 @@
 {
-	"short_name": "ke-ba-ke-san",
+	"short_name": "競馬メモ",
 	"name": "pwa_ke-ba-ke-san_app",
 	"display": "standalone",
 	"start_url": "index.html",
