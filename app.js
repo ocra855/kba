@@ -1,3 +1,4 @@
+// --- 要素の取得 ---
 const raceNameInput = document.getElementById('raceName');
 const horseNameInput = document.getElementById('horseName');
 const investInput = document.getElementById('investAmount');
@@ -8,66 +9,132 @@ const totalBalanceEl = document.getElementById('totalBalance');
 const totalRecoveryEl = document.getElementById('totalRecovery');
 const clearBtn = document.getElementById('clearBtn');
 
+// --- 変数 ---
+let isEditing = false; // 編集中かどうかのフラグ
+let editId = null;     // 編集中のデータのID
+
+// --- 初期化 ---
 document.addEventListener('DOMContentLoaded', loadRecords);
 
+// --- 保存ボタンの処理 ---
 saveBtn.addEventListener('click', () => {
     const race = raceNameInput.value;
     const horse = horseNameInput.value;
-    // 数値に変換 (空なら0)
     const invest = Number(investInput.value) || 0;
     const ret = Number(returnInput.value) || 0;
 
     if (!race && !invest) {
-        alert('せめてレース名か金額は入力してください！');
+        alert('レース名か金額を入力してください');
         return;
     }
 
-    const record = {
-        id: Date.now(),
+    const recordData = {
+        id: isEditing ? editId : Date.now(), // 編集中なら同じID、新規なら新ID
         date: new Date().toLocaleDateString(),
         race: race,
         horse: horse,
         invest: invest,
         ret: ret,
-        balance: ret - invest, // 収支
-        recovery: invest === 0 ? 0 : Math.round((ret / invest) * 100) // 回収率
+        balance: ret - invest,
+        recovery: invest === 0 ? 0 : Math.round((ret / invest) * 100)
     };
 
-    saveRecord(record);
-    addRecordToDOM(record);
-    updateSummary();
+    if (isEditing) {
+        updateRecord(recordData);
+    } else {
+        saveNewRecord(recordData);
+    }
+
+    // 入力欄をクリアしてリセット
+    resetForm();
+});
+
+// --- データ操作関数 ---
+
+// 新規保存
+function saveNewRecord(record) {
+    let records = getRecords();
+    records.unshift(record);
+    localStorage.setItem('keiba-records', JSON.stringify(records));
+    loadRecords(); // 再描画
+}
+
+// 更新（上書き）
+function updateRecord(updatedRecord) {
+    let records = getRecords();
+    // IDが一致するものを探して置き換える
+    records = records.map(r => r.id === updatedRecord.id ? updatedRecord : r);
+    localStorage.setItem('keiba-records', JSON.stringify(records));
+    loadRecords(); // 再描画
+}
+
+// 削除
+function deleteRecord(id) {
+    if (!confirm('この記録を削除してもよろしいですか？')) return;
     
-    // 入力リセット
+    let records = getRecords();
+    records = records.filter(r => r.id !== id); // IDが一致しないものだけ残す
+    localStorage.setItem('keiba-records', JSON.stringify(records));
+    
+    // もし編集中だったものを消した場合はフォームもリセット
+    if(isEditing && editId === id) {
+        resetForm();
+    }
+    loadRecords();
+}
+
+// 編集モードに入る
+function editRecord(id) {
+    const records = getRecords();
+    const target = records.find(r => r.id === id);
+    
+    if (target) {
+        // 入力欄にデータを戻す
+        raceNameInput.value = target.race;
+        horseNameInput.value = target.horse;
+        investInput.value = target.invest;
+        returnInput.value = target.ret;
+
+        // 編集モードON
+        isEditing = true;
+        editId = id;
+        
+        // ボタンの見た目を変える
+        saveBtn.textContent = '修正内容を保存';
+        saveBtn.style.backgroundColor = '#1976d2'; // 青色に変更
+        
+        // 画面一番上（入力欄）へスクロール
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// フォームのリセット
+function resetForm() {
     raceNameInput.value = '';
     horseNameInput.value = '';
     investInput.value = '';
     returnInput.value = '';
-});
-
-clearBtn.addEventListener('click', () => {
-    if(confirm('本当に全てのデータを消しますか？')) {
-        localStorage.removeItem('keiba-records');
-        location.reload();
-    }
-});
-
-function saveRecord(record) {
-    let records = getRecords();
-    records.unshift(record);
-    localStorage.setItem('keiba-records', JSON.stringify(records));
+    
+    isEditing = false;
+    editId = null;
+    saveBtn.textContent = '記録をつける';
+    saveBtn.style.backgroundColor = '#f57c00'; // オレンジに戻す
 }
+
+// --- 読み込み・表示関連 ---
 
 function getRecords() {
     return JSON.parse(localStorage.getItem('keiba-records') || '[]');
 }
 
 function loadRecords() {
+    recordList.innerHTML = ''; // 一旦クリア
     const records = getRecords();
-    records.forEach(addRecordToDOM);
+    records.forEach(createRecordElement);
     updateSummary();
 }
 
-function addRecordToDOM(record) {
+function createRecordElement(record) {
     const div = document.createElement('div');
     const isWin = record.balance >= 0;
     div.classList.add('record-card', isWin ? 'win' : 'lose');
@@ -81,13 +148,17 @@ function addRecordToDOM(record) {
             ${record.horse ? '📝 ' + record.horse : ''}
         </div>
         <div class="card-result">
-            <span>投: ${record.invest.toLocaleString()}円 → 回: ${record.ret.toLocaleString()}円</span>
+            <span>投: ${record.invest.toLocaleString()} → 回: ${record.ret.toLocaleString()}</span>
             <span class="${isWin ? 'plus' : 'minus'}">
-                ${isWin ? '+' : ''}${record.balance.toLocaleString()}円 (${record.recovery}%)
+                ${isWin ? '+' : ''}${record.balance.toLocaleString()}
             </span>
         </div>
+        <div class="action-buttons">
+            <button class="edit-btn" onclick="editRecord(${record.id})">編集</button>
+            <button class="delete-btn" onclick="deleteRecord(${record.id})">削除</button>
+        </div>
     `;
-    recordList.prepend(div); // DOM上では新しいものを上に追加(リロード時と合わせるためprependにするかは調整)
+    recordList.appendChild(div);
 }
 
 function updateSummary() {
@@ -96,8 +167,8 @@ function updateSummary() {
     let totalReturn = 0;
 
     records.forEach(r => {
-        totalInvest += r.invest;
-        totalReturn += r.ret;
+        totalInvest += Number(r.invest);
+        totalReturn += Number(r.ret);
     });
 
     const totalBalance = totalReturn - totalInvest;
@@ -105,12 +176,18 @@ function updateSummary() {
 
     totalBalanceEl.textContent = `${totalBalance >= 0 ? '+' : ''}${totalBalance.toLocaleString()}円`;
     totalRecoveryEl.textContent = `${totalRecovery}%`;
-    
-    // 収支の色変え
     totalBalanceEl.style.color = totalBalance >= 0 ? '#81c784' : '#ffccbc';
 }
 
-// Service Worker登録（前のと同じでOK）
+// 全消去ボタン
+clearBtn.addEventListener('click', () => {
+    if(confirm('本当に全てのデータを消しますか？')) {
+        localStorage.removeItem('keiba-records');
+        loadRecords();
+    }
+});
+
+// Service Worker登録
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js');
