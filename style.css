@@ -162,6 +162,7 @@ button {
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     margin-bottom: 20px;
+    margin-top: 10px;
     border-top: 4px solid #00897b;
 }
 
