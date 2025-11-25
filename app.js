@@ -191,3 +191,74 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js');
     });
 }
+
+// --- バックアップ・復元機能 ---
+
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importInput = document.getElementById('importInput');
+
+// 1. データを書き出す（バックアップ）
+exportBtn.addEventListener('click', () => {
+    const records = localStorage.getItem('keiba-records');
+    
+    if (!records || records === '[]') {
+        alert('保存するデータがありません');
+        return;
+    }
+
+    // データをファイル(blob)にする
+    const blob = new Blob([records], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    
+    // ダウンロードリンクを作って自動で押す
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `keiba_backup_${new Date().toISOString().slice(0,10)}.json`; // ファイル名に日付を入れる
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+});
+
+// 2. データを読み込むボタンを押した時
+importBtn.addEventListener('click', () => {
+    // 隠してあるファイル選択画面を開く
+    importInput.click();
+});
+
+// 3. ファイルが選択されたら実行（復元）
+importInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!confirm('現在のデータを上書きして復元しますか？\n（今のデータは消えて、ファイルの内容になります）')) {
+        importInput.value = ''; // キャンセルしたらリセット
+        return;
+    }
+
+    const reader = new FileReader();
+    
+    reader.onload = (e) => {
+        try {
+            const json = e.target.result;
+            // 正しいデータかチェック（パースしてみる）
+            const parsed = JSON.parse(json);
+            
+            if (Array.isArray(parsed)) {
+                // LocalStorageに上書き保存
+                localStorage.setItem('keiba-records', json);
+                alert('復元が完了しました！');
+                location.reload(); // 画面を更新して反映
+            } else {
+                alert('データの形式が正しくありません');
+            }
+        } catch (err) {
+            alert('ファイルの読み込みに失敗しました');
+            console.error(err);
+        }
+    };
+    
+    reader.readAsText(file);
+});
+
