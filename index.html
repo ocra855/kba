@@ -55,6 +55,22 @@ if ('serviceWorker' in navigator) {
         </div>
         
         <button id="clearBtn" class="danger-btn">データ全消去</button>
+								<div class="backup-area">
+    <h3>⚙️ データ管理</h3>
+    <p style="font-size:0.8rem; color:#666;">機種変更の時は、ここでデータを保存・復元してください。</p>
+    
+    <button id="exportBtn" style="background-color:#00897b; margin-bottom:10px;">
+        📥 データをファイルに保存
+    </button>
+    
+    <button id="importBtn" style="background-color:#00897b;">
+        📤 データを復元（読み込み）
+    </button>
+    
+    <input type="file" id="importInput" style="display:none" accept=".json">
+</div>
+
+
     </div>
     <script src="app.js"></script>
 </body>
