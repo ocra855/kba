@@ -1,77 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>競馬メモ</title>
-    <link rel="manifest" href="manifest.json">
-<script>
-if ('serviceWorker' in navigator) {
-	window.addEventListener('load', () => {
-	navigator.serviceWorker.register('sw.js').then(registration => {
-	console.log('ServiceWorker registration successful with scope: ', registration.scope);
-	}, err => {
-	console.log('ServiceWorker registration failed: ', err);
-	}).catch(err => {
-	console.log(err)
-	});
-	});
-}
-</script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2E7D32">
-</head>
-<body>
-    <div class="container">
-        <header class="summary-board">
-            <h2>💰 通算成績</h2>
-            <div class="stats">
-                <div class="stat-item">
-                    <span>収支</span>
-                    <span id="totalBalance" class="big-num">¥0</span>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>競馬メモ</title>
+        <link rel="manifest" href="manifest.json" />
+        <script>
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", () => {
+                    navigator.serviceWorker
+                        .register("sw.js")
+                        .then(
+                            (registration) => {
+                                console.log("ServiceWorker registration successful with scope: ", registration.scope);
+                            },
+                            (err) => {
+                                console.log("ServiceWorker registration failed: ", err);
+                            }
+                        )
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                });
+            }
+        </script>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="manifest" href="manifest.json" />
+        <meta name="theme-color" content="#2E7D32" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="switchTab('record')">📝 成績記録</button>
+                <button class="tab-btn" onclick="switchTab('calc')">🧮 オッズ計算</button>
+            </div>
+
+            <div id="recordTab" class="tab-content active">
+                <header class="summary-board">
+                    <h2>💰 通算成績</h2>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span>収支</span>
+                            <span id="totalBalance" class="big-num">¥0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>回収率</span>
+                            <span id="totalRecovery" class="big-num">0%</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="input-area">
+                    <h3>新規記録</h3>
+                    <input type="text" id="raceName" placeholder="レース名 (例: 有馬記念)" />
+                    <textarea id="horseName" rows="3" placeholder="軸馬・買い目メモ..."></textarea>
+                    <div class="money-inputs">
+                        <input type="number" id="investAmount" placeholder="投資額 (円)" />
+                        <input type="number" id="returnAmount" placeholder="払戻額 (円)" />
+                    </div>
+                    <button id="saveBtn">記録をつける</button>
                 </div>
-                <div class="stat-item">
-                    <span>回収率</span>
-                    <span id="totalRecovery" class="big-num">0%</span>
+
+                <div class="history-area">
+                    <h3>履歴</h3>
+                    <div id="recordList"></div>
+                </div>
+
+                <button id="clearBtn" class="danger-btn">データ全消去</button>
+
+                <div class="backup-area">
+                    <h3>⚙️ データ管理</h3>
+                    <button id="exportBtn" style="background-color: #00897b; margin-bottom: 10px">📥 保存</button>
+                    <button id="importBtn" style="background-color: #00897b">📤 復元</button>
+                    <input type="file" id="importInput" style="display: none" accept=".json" />
                 </div>
             </div>
-        </header>
+            <div id="calcTab" class="tab-content" style="display: none">
+                <div class="input-area">
+                    <h3>🧮 合成オッズ・資金配分</h3>
+                    <p style="font-size: 0.8rem; color: #666">予算に合わせて利益が均等になるように配分します。</p>
 
-        <div class="input-area">
-            <h3>新規記録</h3>
-            <input type="text" id="raceName" placeholder="レース名 (例: 有馬記念)">
-            <textarea id="horseName" rows="3" placeholder="軸馬・買い目メモ&#13;&#10;例：&#13;&#10;◎イクイノックス&#13;&#10;単勝 1000円"></textarea>
-            <div class="money-inputs">
-                <input type="number" id="investAmount" placeholder="投資額 (円)">
-                <input type="number" id="returnAmount" placeholder="払戻額 (円)">
+                    <label>総予算 (円)</label>
+                    <input type="number" id="calcBudget" value="1000" step="100" />
+
+                    <div id="oddsInputList"></div>
+
+                    <button onclick="addOddsInput()" style="background-color: #00897b; margin-bottom: 10px">
+                        ＋ 買い目を追加
+                    </button>
+                    <button onclick="calculateOdds()" id="calcBtn">計算する</button>
+                </div>
+
+                <div
+                    class="summary-board"
+                    id="calcResultArea"
+                    style="display: none; margin-top: 20px; background: #1976d2">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+                        <span>合成オッズ:</span>
+                        <span id="resultComposite" style="font-weight: bold; font-size: 1.2rem">--</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between">
+                        <span>予想払戻:</span>
+                        <span id="resultReturn" style="font-weight: bold; font-size: 1.2rem">--</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; opacity: 0.8">
+                        <span>利益:</span>
+                        <span id="resultProfit">--</span>
+                    </div>
+                </div>
+
+                <div id="calcDistributionList" style="margin-top: 15px"></div>
             </div>
-            <button id="saveBtn">記録をつける</button>
         </div>
-
-        <div class="history-area">
-            <h3>履歴</h3>
-            <div id="recordList"></div>
-        </div>
-        
-        <button id="clearBtn" class="danger-btn">データ全消去</button>
-								
-								
-	<div class="backup-area">
-    <h3>⚙️ データ管理</h3>
-    <p style="font-size:0.8rem; color:#666;">ここでデータを保存・復元してください。<br>定期的にバックアップをとることをおすすめします。</p>
-    
-    <button id="exportBtn" style="background-color:#00897b; margin-bottom:10px;">
-        📥 データをファイルに保存
-    </button>
-    
-    <button id="importBtn" style="background-color:#00897b;">
-        📤 データを復元（読み込み）
-    </button>
-    
-    <input type="file" id="importInput" style="display:none" accept=".json">
-</div>
-    </div>
-    <script src="app.js"></script>
-</body>
+        <script src="app.js"></script>
+    </body>
 </html>
