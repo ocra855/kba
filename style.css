@@ -33,6 +33,14 @@ body {
     justify-content: space-around;
 }
 
+.sub-stats {
+    margin-top: 15px; /* 上との間隔 */
+    font-size: 0.85rem; /* 文字を小さく */
+    opacity: 0.8; /* 少し透明にして控えめに */
+    border-top: 1px dashed rgba(255, 255, 255, 0.3); /* 薄い区切り線 */
+    padding-top: 10px;
+}
+
 .stat-item {
     display: flex;
     flex-direction: column;
@@ -58,6 +66,7 @@ input {
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
+    font-size: 14px;
 }
 
 /* テキストエリア（複数行入力）のデザイン */
@@ -71,6 +80,7 @@ textarea {
     font-family: inherit; /* フォントを統一 */
     resize: vertical; /* 縦方向だけサイズ変更可能にする */
     min-height: 80px; /* 最小の高さ */
+    font-size: 14px;
 }
 
 .money-inputs {
