@@ -8,6 +8,7 @@ const recordList = document.getElementById("recordList");
 const totalBalanceEl = document.getElementById("totalBalance");
 const totalRecoveryEl = document.getElementById("totalRecovery");
 const totalInvestEl = document.getElementById("totalInvestAmount");
+const totalReturnEl = document.getElementById("totalReturnAmount");
 const clearBtn = document.getElementById("clearBtn");
 
 // --- 変数 ---
@@ -176,6 +177,10 @@ function updateSummary() {
     if (totalInvestEl) {
         totalInvestEl.textContent = totalInvest.toLocaleString();
     }
+
+    if (totalReturnEl) {
+        totalReturnEl.textContent = totalReturn.toLocaleString();
+    
     totalBalanceEl.textContent = `${totalBalance >= 0 ? "+" : ""}${totalBalance.toLocaleString()}円`;
     totalRecoveryEl.textContent = `${totalRecovery}%`;
     totalBalanceEl.style.color = totalBalance >= 0 ? "#81c784" : "#ffccbc";
