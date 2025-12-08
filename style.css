@@ -13,34 +13,43 @@ body {
 
 /* 集計ボード */
 .summary-board {
-    background: #2E7D32; /* ターフの緑 */
+    background: #2e7d32; /* ターフの緑 */
     color: white;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
-.summary-board h2 { margin: 0 0 10px 0; font-size: 1.2rem; opacity: 0.9; }
+.summary-board h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
 
 .stats {
     display: flex;
     justify-content: space-around;
 }
 
-.stat-item { display: flex; flex-direction: column; }
-.big-num { font-size: 1.8rem; font-weight: bold; }
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+.big-num {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
 
 /* 入力エリア */
 .input-area {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
 }
-
 
 input {
     width: 100%;
@@ -51,7 +60,6 @@ input {
     box-sizing: border-box;
 }
 
-
 /* テキストエリア（複数行入力）のデザイン */
 textarea {
     width: 100%;
@@ -61,10 +69,9 @@ textarea {
     border-radius: 5px;
     box-sizing: border-box;
     font-family: inherit; /* フォントを統一 */
-    resize: vertical;     /* 縦方向だけサイズ変更可能にする */
-    min-height: 80px;     /* 最小の高さ */
+    resize: vertical; /* 縦方向だけサイズ変更可能にする */
+    min-height: 80px; /* 最小の高さ */
 }
-
 
 .money-inputs {
     display: flex;
@@ -96,11 +103,15 @@ button {
     margin-bottom: 10px;
     border-radius: 8px;
     border-left: 5px solid #ccc;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.record-card.win { border-left-color: #e53935; } /* 勝ち */
-.record-card.lose { border-left-color: #1976d2; } /* 負け */
+.record-card.win {
+    border-left-color: #e53935;
+} /* 勝ち */
+.record-card.lose {
+    border-left-color: #1976d2;
+} /* 負け */
 
 .card-header {
     display: flex;
@@ -113,10 +124,9 @@ button {
     font-size: 0.9rem;
     color: #555;
     margin-bottom: 8px;
-    white-space: pre-wrap; 
+    white-space: pre-wrap;
     line-height: 1.5; /* 行間を少し広げて読みやすく */
 }
-
 
 .card-result {
     display: flex;
@@ -126,8 +136,12 @@ button {
     border-top: 1px solid #eee;
 }
 
-.plus { color: #e53935; }
-.minus { color: #1976d2; }
+.plus {
+    color: #e53935;
+}
+.minus {
+    color: #1976d2;
+}
 
 .action-buttons {
     margin-top: 10px;
@@ -160,7 +174,7 @@ button {
     background: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
     margin-top: 10px;
     border-top: 4px solid #00897b;
@@ -171,3 +185,63 @@ button {
     color: #00897b;
 }
 
+/* style.css の末尾に追加 */
+
+/* タブメニューのデザイン */
+.tab-menu {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    background-color: #ddd;
+    color: #555;
+    border-radius: 20px;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    flex: 1; /* 横幅いっぱいに広げる */
+    transition: 0.2s;
+}
+
+.tab-btn.active {
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* オッズ入力欄の行デザイン */
+.odds-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+.odds-row input {
+    margin-bottom: 0;
+}
+.remove-row-btn {
+    background: #e53935;
+    width: 40px;
+    padding: 0;
+    height: 42px; /* inputの高さに合わせる */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 配分結果のリスト */
+.dist-item {
+    background: white;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.dist-buy {
+    font-weight: bold;
+    color: #1976d2;
+    font-size: 1.1rem;
+}
